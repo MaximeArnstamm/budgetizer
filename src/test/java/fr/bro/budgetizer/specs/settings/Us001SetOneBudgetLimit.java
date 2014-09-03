@@ -16,7 +16,7 @@ import fr.bro.budgetizer.specs.SpringConcordionJUnitRunner;
 
 @WebAppConfiguration
 @RunWith(SpringConcordionJUnitRunner.class)
-@ContextConfiguration(locations = { "file:src/main/webapp/WEB-INF/spring-config.xml" })
+@ContextConfiguration(locations = { "file:src/main/webapp/WEB-INF/mvc-dispatcher-servlet.xml" })
 public class Us001SetOneBudgetLimit extends SpecTest {
 
 	public Long nbBudgetLimits() {
