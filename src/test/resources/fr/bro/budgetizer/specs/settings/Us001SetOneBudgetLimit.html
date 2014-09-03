@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html xmlns:concordion="http://www.concordion.org/2007/concordion">
+<head>
+<meta charset="UTF-8" />
+<title>Us 001 Set One Buget Limit</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" />
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" />
+</head>
+<body>
+	<div class="container">
+		<h1>Us 001 Set One Buget Limit</h1>
+		<div class="panel panel-primary">
+			<div class="panel-heading">User story</div>
+			<div class="panel-body">
+				As a <strong>web user</strong>,
+				<br />
+				I want <strong>to set a budget limit on one expense category</strong>
+				<br />
+				In order to <strong>be able to control my spending habits</strong>
+			</div>
+		</div>
+
+		<div class="panel panel-default">
+			<div class="panel-body">
+				<p>
+					In the <strong>Settings</strong> page of the website,
+					<br />
+					I want to be able to create a new expense category and set a budget limit for that category.
+					<br />
+					It should save the results in the database.
+				</p>
+				<div class="well">
+					<label>
+						Category :
+						<input type="text" />
+					</label>
+					<label>
+						Budget limit :
+						<input type="text" />
+					</label>
+					<button class="btn btn-primary">Add</button>
+				</div>
+
+			</div>
+		</div>
+
+		<div class="panel panel-default">
+			<div class="panel-body">
+				Requirements :
+				<ul>
+					<li>Budget is mandatory</li>
+					<li>Budget is an amount : #.##</li>
+					<li>Category is mandatory</li>
+					<li>Category is unique</li>
+					<li>The budget/category table is sorted alphabetically by category</li>
+				</ul>
+			</div>
+		</div>
+
+		<div class="panel-group" id="accordion">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h4 class="panel-title">
+						<a data-toggle="collapse" data-parent="#accordion" href="#collapse1"> Test : create first budget limit </a>
+					</h4>
+				</div>
+				<div id="collapse1" class="panel-collapse collapse">
+					<div class="panel-body">
+						<h4>Given</h4>
+						I have set <span concordion:assertEquals="nbBudgetLimits()">0</span> budget limit.
+						<h4>When</h4>
+						I enter a budget limit of "<span concordion:set="#budgetLimit">400</span>" for the expense category "<span concordion:set="#expenseCategory">Food</span>"
+						and hit "<span concordion:assertTrue="addBudgetLimit(#budgetLimit, #expenseCategory)">Add</span>"
+						<h4>Then</h4>
+						There is a new budget limit in the database :
+						<table class="table table-bordered" concordion:verifyRows="#budgetLines : fetchBudgetLimitList()">
+							<tr>
+								<th concordion:assertEquals="#budgetLines.budgetLimit">Budget Limit</th>
+								<th concordion:assertEquals="#budgetLines.expenseCategory">Expense category</th>
+							</tr>
+							<tr>
+								<td>400</td>
+								<td>Food</td>
+							</tr>
+						</table>
+					</div>
+				</div>
+			</div>
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h4 class="panel-title">
+						<a data-toggle="collapse" data-parent="#accordion" href="#collapse2"> Test : Budget is mandatory </a>
+					</h4>
+				</div>
+				<div id="collapse2" class="panel-collapse collapse">
+					<div class="panel-body">todo</div>
+				</div>
+			</div>
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h4 class="panel-title">
+						<a data-toggle="collapse" data-parent="#accordion" href="#collapse3"> Test : Budget is amount </a>
+					</h4>
+				</div>
+				<div id="collapse3" class="panel-collapse collapse">
+					<div class="panel-body">todo</div>
+				</div>
+			</div>
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h4 class="panel-title">
+						<a data-toggle="collapse" data-parent="#accordion" href="#collapse4"> Test : Category is mandatory </a>
+					</h4>
+				</div>
+				<div id="collapse4" class="panel-collapse collapse">
+					<div class="panel-body">todo</div>
+				</div>
+			</div>
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h4 class="panel-title">
+						<a data-toggle="collapse" data-parent="#accordion" href="#collapse5"> Test : Category is unique </a>
+					</h4>
+				</div>
+				<div id="collapse5" class="panel-collapse collapse">
+					<div class="panel-body">todo</div>
+				</div>
+			</div>
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h4 class="panel-title">
+						<a data-toggle="collapse" data-parent="#accordion" href="#collapse6"> Test : Budget lines are rendered sorted by category </a>
+					</h4>
+				</div>
+				<div id="collapse6" class="panel-collapse collapse">
+					<div class="panel-body">todo</div>
+				</div>
+			</div>
+
+		</div>
+	</div>
+</body>
+</html>
