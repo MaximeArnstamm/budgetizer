@@ -5,6 +5,12 @@
 <title>Us 001 Set One Buget Limit</title>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" />
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" />
+<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js">
+	
+</script>
+<script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js">
+	
+</script>
 </head>
 <body>
 	<div class="container">
@@ -61,19 +67,19 @@
 			<div class="panel panel-default">
 				<div class="panel-heading">
 					<h4 class="panel-title">
-						<a data-toggle="collapse" data-parent="#accordion" href="#collapse1"> Test : create first budget limit </a>
+						<a data-toggle="collapse" data-parent="#accordion" href="#collapse1"> Test : Create first budget limit </a>
 					</h4>
 				</div>
 				<div id="collapse1" class="panel-collapse collapse">
 					<div class="panel-body">
 						<h4>Given</h4>
-						I have set <span concordion:assertEquals="nbBudgetLimits()">0</span> budget limit.
+						<span concordion:assertTrue="resetDatabase()">Setting up database</span>
 						<h4>When</h4>
 						I enter a budget limit of "<span concordion:set="#budgetLimit">400</span>" for the expense category "<span concordion:set="#expenseCategory">Food</span>"
 						and hit "<span concordion:assertTrue="addBudgetLimit(#budgetLimit, #expenseCategory)">Add</span>"
 						<h4>Then</h4>
 						There is a new budget limit in the database :
-						<table class="table table-bordered" concordion:verifyRows="#budgetLines : fetchBudgetLimitList()">
+						<table class="table table-bordered" concordion:verifyRows="#budgetLines : printBudgetLimitList()">
 							<tr>
 								<th concordion:assertEquals="#budgetLines.budgetLimit">Budget Limit</th>
 								<th concordion:assertEquals="#budgetLines.expenseCategory">Expense category</th>
@@ -93,7 +99,26 @@
 					</h4>
 				</div>
 				<div id="collapse2" class="panel-collapse collapse">
-					<div class="panel-body">todo</div>
+					<div class="panel-body">
+						<h4>Given</h4>
+						<span concordion:assertTrue="resetDatabase()">Setting up database</span>
+						<h4>When</h4>
+						I enter an empty budget limit <span concordion:set="#budgetLimit"></span> for the expense category "<span concordion:set="#expenseCategory">Food</span>"
+						and hit "Add"
+						<h4>Then</h4>
+						There are two errors :
+						<table class="table table-bordered" concordion:verifyRows="#errors : addBudgetWithErrors(#budgetLimit, #expenseCategory)">
+							<tr>
+								<th concordion:assertEquals="#errors">Errors</th>
+							</tr>
+							<tr>
+								<td>Le budget limite doit être un montant (2 décimales max)</td>
+							</tr>
+							<tr>
+								<td>Le budget limite est obligatoire</td>
+							</tr>
+						</table>
+					</div>
 				</div>
 			</div>
 			<div class="panel panel-default">
@@ -103,7 +128,23 @@
 					</h4>
 				</div>
 				<div id="collapse3" class="panel-collapse collapse">
-					<div class="panel-body">todo</div>
+					<div class="panel-body">
+						<h4>Given</h4>
+						<span concordion:assertTrue="resetDatabase()">Setting up database</span>
+						<h4>When</h4>
+						I enter a budget limit of "<span concordion:set="#budgetLimit">toto</span>" for the expense category "<span concordion:set="#expenseCategory">Food</span>"
+						and hit "Add"
+						<h4>Then</h4>
+						There is an error :
+						<table class="table table-bordered" concordion:verifyRows="#errors : addBudgetWithErrors(#budgetLimit, #expenseCategory)">
+							<tr>
+								<th concordion:assertEquals="#errors">Errors</th>
+							</tr>
+							<tr>
+								<td>Le budget limite doit être un montant (2 décimales max)</td>
+							</tr>
+						</table>
+					</div>
 				</div>
 			</div>
 			<div class="panel panel-default">
@@ -113,7 +154,23 @@
 					</h4>
 				</div>
 				<div id="collapse4" class="panel-collapse collapse">
-					<div class="panel-body">todo</div>
+					<div class="panel-body">
+						<h4>Given</h4>
+						<span concordion:assertTrue="resetDatabase()">Setting up database</span>
+						<h4>When</h4>
+						I enter a budget limit of "<span concordion:set="#budgetLimit">400</span>" for the expense category "<span concordion:set="#expenseCategory"></span>"
+						and hit "Add"
+						<h4>Then</h4>
+						There is an error :
+						<table class="table table-bordered" concordion:verifyRows="#errors : addBudgetWithErrors(#budgetLimit, #expenseCategory)">
+							<tr>
+								<th concordion:assertEquals="#errors">Errors</th>
+							</tr>
+							<tr>
+								<td>La catégorie est obligatoire</td>
+							</tr>
+						</table>
+					</div>
 				</div>
 			</div>
 			<div class="panel panel-default">
@@ -123,7 +180,27 @@
 					</h4>
 				</div>
 				<div id="collapse5" class="panel-collapse collapse">
-					<div class="panel-body">todo</div>
+					<div class="panel-body">
+						<h4>Given</h4>
+						<span concordion:assertTrue="resetDatabase()">Setting up database</span>
+						<p concordion:execute="addBudgetInDatabase(#budgetLimit, #expenseCategory)">
+							i add directly into the database a budget limit (<span concordion:set="#budgetLimit">1000</span>,<span concordion:set="#expenseCategory">Food</span>)
+						</p>
+						<h4>When</h4>
+						I enter a budget limit of "<span concordion:set="#budgetLimit">400</span>" for the expense category "<span concordion:set="#expenseCategory">Food</span>"
+						and hit "Add"
+
+						<h4>Then</h4>
+						There is an Error :
+						<table class="table table-bordered" concordion:verifyRows="#errors : addBudgetWithErrors(#budgetLimit, #expenseCategory)">
+							<tr>
+								<th concordion:assertEquals="#errors">Errors</th>
+							</tr>
+							<tr>
+								<td>La catégorie existe déjà</td>
+							</tr>
+						</table>
+					</div>
 				</div>
 			</div>
 			<div class="panel panel-default">
@@ -133,7 +210,32 @@
 					</h4>
 				</div>
 				<div id="collapse6" class="panel-collapse collapse">
-					<div class="panel-body">todo</div>
+					<div class="panel-body">
+						<h4>Given</h4>
+						<span concordion:assertTrue="resetDatabase()">Setting up database</span>
+						<p concordion:execute="addBudgetInDatabase(#budgetLimit, #expenseCategory)">
+							i add directly into the database a budget limit (<span concordion:set="#budgetLimit">1000</span>,<span concordion:set="#expenseCategory">Shopping</span>)
+						</p>
+						<h4>When</h4>
+						I enter a budget limit of "<span concordion:set="#budgetLimit">400</span>" for the expense category "<span concordion:set="#expenseCategory">Food</span>"
+						and hit "<span concordion:assertTrue="addBudgetLimit(#budgetLimit, #expenseCategory)">Add</span>"
+						<h4>Then</h4>
+						There is a new budget limit in the database :
+						<table class="table table-bordered" concordion:verifyRows="#budgetLines : printBudgetLimitList()">
+							<tr>
+								<th concordion:assertEquals="#budgetLines.budgetLimit">Budget Limit</th>
+								<th concordion:assertEquals="#budgetLines.expenseCategory">Expense category</th>
+							</tr>
+							<tr>
+								<td>400</td>
+								<td>Food</td>
+							</tr>
+							<tr>
+								<td>1000</td>
+								<td>Shopping</td>
+							</tr>
+						</table>
+					</div>
 				</div>
 			</div>
 

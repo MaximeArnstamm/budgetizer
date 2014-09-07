@@ -39,16 +39,16 @@
 			<artifactId>hibernate-entitymanager</artifactId>
 			<version>4.3.6.Final</version>
 		</dependency>
+
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-validator</artifactId>
-			<version>5.1.2.Final</version>
+			<version>4.1.0.Final</version>
 		</dependency>
-
 		<dependency>
 			<groupId>javax.validation</groupId>
 			<artifactId>validation-api</artifactId>
-			<version>1.1.0.Final</version>
+			<version>1.0.0.GA</version>
 		</dependency>
 
 		<dependency>
@@ -67,6 +67,12 @@
 			<groupId>javax.servlet</groupId>
 			<artifactId>javax.servlet-api</artifactId>
 			<version>3.0.1</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet.jsp</groupId>
+			<artifactId>jsp-api</artifactId>
+			<version>2.1</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
@@ -128,10 +134,12 @@
 					<includes>
 						<include>**/*.java</include>
 					</includes>
-					<systemPropertyVariables>
-						<propertyName>concordion.output.dir</propertyName>
-						<buildDirectory>target/concordion</buildDirectory>
-					</systemPropertyVariables>
+					<systemProperties>
+						<property>
+							<name>concordion.output.dir</name>
+							<value>target/concordion</value>
+						</property>
+					</systemProperties>
 				</configuration>
 			</plugin>
 		</plugins>

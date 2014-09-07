@@ -12,23 +12,17 @@
 
 <title>Budgetizer</title>
 
-<!-- Bootstrap Core CSS -->
-<link href="<c:url value="/resources/css/bootstrap.min.css"/>" rel="stylesheet">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" />
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" />
 
-<!-- MetisMenu CSS -->
+<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+<script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+
+
 <link href="<c:url value="/resources/css/plugins/metisMenu/metisMenu.min.css"/>" rel="stylesheet">
-
-<!-- Timeline CSS -->
 <link href="<c:url value="/resources/css/plugins/timeline.css"/>" rel="stylesheet">
-
-<!-- Custom CSS -->
 <link href="<c:url value="/resources/css/sb-admin-2.css"/>" rel="stylesheet">
-
-<!-- Morris Charts CSS -->
 <link href="<c:url value="/resources/css/plugins/morris.css"/>" rel="stylesheet">
-
-<!-- Custom Fonts -->
-<link href="<c:url value="/resources/font-awesome-4.1.0/css/font-awesome.min.css"/>" rel="stylesheet" type="text/css">
 
 <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
 <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -103,7 +97,7 @@
 									<i class="fa fa-bar-chart-o fa-5x"></i>
 								</div>
 								<div class="col-xs-9 text-right">
-									<div class="huge">${dashboard.globalLevel} %</div>
+									<div class="huge">${dashboard.globalLevel}%</div>
 									<div>${dashboard.message}</div>
 								</div>
 							</div>

@@ -2,11 +2,13 @@ package fr.bro.budgetizer.domain;
 
 import java.io.Serializable;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.validation.constraints.Digits;
-import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.NotEmpty;
 
 @Entity
 public class BudgetLimit implements Serializable {
@@ -16,11 +18,12 @@ public class BudgetLimit implements Serializable {
 	@GeneratedValue
 	private Long id;
 
-	@NotNull(message = "Le budget limite est obligatoire")
+	@NotEmpty(message = "Le budget limite est obligatoire")
 	@Digits(integer = 10, fraction = 2, message = "Le budget limite doit être un montant (2 décimales max)")
 	private String budgetLimit;
 
-	@NotNull(message = "La catégorie est obligatoire")
+	@NotEmpty(message = "La catégorie est obligatoire")
+	@Column(unique = true)
 	private String expenseCategory;
 
 	public Long getId() {

@@ -12,23 +12,18 @@
 
 <title>Budgetizer</title>
 
-<!-- Bootstrap Core CSS -->
-<link href="<c:url value="/resources/css/bootstrap.min.css"/>" rel="stylesheet">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" />
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" />
 
-<!-- MetisMenu CSS -->
+<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+<script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+
+
 <link href="<c:url value="/resources/css/plugins/metisMenu/metisMenu.min.css"/>" rel="stylesheet">
-
-<!-- Timeline CSS -->
 <link href="<c:url value="/resources/css/plugins/timeline.css"/>" rel="stylesheet">
-
-<!-- Custom CSS -->
 <link href="<c:url value="/resources/css/sb-admin-2.css"/>" rel="stylesheet">
-
-<!-- Morris Charts CSS -->
 <link href="<c:url value="/resources/css/plugins/morris.css"/>" rel="stylesheet">
 
-<!-- Custom Fonts -->
-<link href="<c:url value="/resources/font-awesome-4.1.0/css/font-awesome.min.css"/>" rel="stylesheet" type="text/css">
 
 <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
 <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -66,19 +61,19 @@
 				<div class="sidebar-nav navbar-collapse">
 					<ul class="nav" id="side-menu">
 						<li>
-							<a href="index.html">
+							<a href="${pageContext.request.contextPath}">
 								<i class="fa fa-dashboard fa-fw"></i>
 								Dashboard
 							</a>
 						</li>
 						<li>
-							<a href="tables.html">
+							<a href="${pageContext.request.contextPath}/history">
 								<i class="fa fa-table fa-fw"></i>
 								Historique
 							</a>
 						</li>
 						<li>
-							<a class="active" href="settings">
+							<a class="active" href="${pageContext.request.contextPath}/settings">
 								<i class="fa fa-wrench fa-fw"></i>
 								Préférences de budget
 							</a>
@@ -94,15 +89,66 @@
 				<h1>Préférences</h1>
 			</div>
 			<div class="row">
-				<form:form method="post" action="settings/budget/add" commandName="budgetLimit">
-					<div class="form-group">
-						<form:label path="test">Test:</form:label>
-						<form:input path="test" class="form-control" placeholder="Test" />
+				<div class="col-lg-6">
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<i class="fa fa-arrow-circle-down fa-fw"></i>
+							Ajouter un budget
+						</div>
+						<div class="panel-body">
+							<form:form method="post" action="settings/budget/add" commandName="budget">
+								<div class="row">
+									<div class="col-lg-6">
+										<div class="form-group">
+											<form:label path="budgetLimit">Limite de budget : </form:label>
+											<div class="form-group input-group">
+												<form:input path="budgetLimit" class="form-control" placeholder="ex : 800 " />
+												<span class="input-group-addon"> <i class="fa fa-eur"></i>
+												</span>
+											</div>
+											<form:errors path="budgetLimit" class="has-error" />
+										</div>
+									</div>
+									<div class="col-lg-6">
+										<div class="form-group">
+											<form:label path="expenseCategory">Catégorie : </form:label>
+											<form:input path="expenseCategory" class="form-control" placeholder="ex : Repas " />
+										</div>
+										<form:errors path="expenseCategory" class="has-error" />
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-lg-1">
+										<button type="submit" class="btn btn-primary">Ajouter</button>
+									</div>
+								</div>
+							</form:form>
+						</div>
 					</div>
-					<button type="submit" class="btn btn-default">Save Settings</button>
-					<form:errors path="test" />
+				</div>
 
-				</form:form>
+				<div class="col-lg-6">
+					<div class="panel panel-info">
+						<div class="panel-heading">
+							<i class="fa fa-table fa-fw"></i>
+							Limites de budget par catégorie
+						</div>
+						<div class="panel-body">
+							<table class="table table-bordered">
+								<tr>
+									<th>Catégorie</th>
+									<th>Budget</th>
+								</tr>
+								<c:forEach items="${budgets}" var="bubu">
+									<tr>
+										<td>${bubu.expenseCategory}</td>
+										<td>${bubu.budgetLimit}</td>
+									</tr>
+								</c:forEach>
+							</table>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
