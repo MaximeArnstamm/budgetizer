@@ -1,13 +1,14 @@
 package fr.bro.budgetizer.controller;
 
 import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.*;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -15,12 +16,9 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Sort;
-import org.springframework.ui.ExtendedModelMap;
 import org.springframework.ui.Model;
-import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.Errors;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.springframework.web.servlet.mvc.support.RedirectAttributesModelMap;
 
 import fr.bro.budgetizer.domain.BudgetLimit;
 import fr.bro.budgetizer.repository.BudgetLimitRepository;
@@ -33,6 +31,15 @@ public class SettingsControllerTest {
 	@InjectMocks
 	private SettingsController settingsController;
 
+	@Mock
+	RedirectAttributes redirectAttributes;
+
+	@Mock
+	Errors errors;
+
+	@Mock
+	Model model;
+
 	@Test
 	public void saveSettings_should_save() {
 		// Given
@@ -40,9 +47,7 @@ public class SettingsControllerTest {
 		budgetLimit.setBudgetLimit("400");
 		budgetLimit.setExpenseCategory("Food");
 
-		Errors errors = new BeanPropertyBindingResult(budgetLimit, "budget");
-
-		RedirectAttributes redirectAttributes = new RedirectAttributesModelMap();
+		when(errors.hasErrors()).thenReturn(false);
 
 		// When
 		settingsController.saveSettings(budgetLimit, errors, redirectAttributes);
@@ -52,14 +57,25 @@ public class SettingsControllerTest {
 	}
 
 	@Test
+	public void saveSettings_should_redirect() {
+
+		// Given
+		BudgetLimit budgetLimit = new BudgetLimit();
+
+		// When
+		settingsController.saveSettings(budgetLimit, errors, redirectAttributes);
+
+		// Then
+		verify(redirectAttributes).addFlashAttribute("budget", budgetLimit);
+		verify(redirectAttributes).addFlashAttribute(SettingsController.BINDING_FIELD + "budget", errors);
+	}
+
+	@Test
 	public void saveSettings_should_not_save_if_errors() {
 		// Given
 		BudgetLimit budgetLimit = new BudgetLimit();
 
-		Errors errors = new BeanPropertyBindingResult(budgetLimit, "budget");
-		errors.reject("");
-
-		RedirectAttributes redirectAttributes = new RedirectAttributesModelMap();
+		when(errors.hasErrors()).thenReturn(true);
 
 		// When
 		settingsController.saveSettings(budgetLimit, errors, redirectAttributes);
@@ -73,22 +89,20 @@ public class SettingsControllerTest {
 		// Given
 		BudgetLimit budgetLimit = new BudgetLimit();
 
-		Errors errors = new BeanPropertyBindingResult(budgetLimit, "budget");
+		when(errors.hasErrors()).thenReturn(false);
 
 		when(budgetLimitRepository.save(budgetLimit)).thenThrow(new DataIntegrityViolationException(""));
-
-		RedirectAttributes redirectAttributes = new RedirectAttributesModelMap();
 
 		// When
 		settingsController.saveSettings(budgetLimit, errors, redirectAttributes);
 
 		// Then
-		Assert.assertEquals(1, errors.getAllErrors().size());
-		Assert.assertEquals(SettingsController.MSG_ERROR_NON_UNIQUE_CATEGORY, errors.getAllErrors().get(0).getDefaultMessage());
+		verify(errors).rejectValue("expenseCategory", "", SettingsController.MSG_ERROR_NON_UNIQUE_CATEGORY);
 	}
 
 	@Test
 	public void loadSettings() {
+		
 		// Given
 		BudgetLimit budgetLimit1 = new BudgetLimit();
 		BudgetLimit budgetLimit2 = new BudgetLimit();
@@ -96,33 +110,25 @@ public class SettingsControllerTest {
 
 		when(budgetLimitRepository.findAll(any(Sort.class))).thenReturn(budgets);
 
-		Model model = new ExtendedModelMap();
-
 		// When
 		settingsController.loadSettings(model);
 
 		// Then
-		Assert.assertNotNull(model.asMap().get("budget"));
-		Assert.assertEquals(budgets, model.asMap().get("budgets"));
+		verify(model).addAttribute("budget", new BudgetLimit());
+		verify(model).addAttribute("budgets", budgets);
 	}
 
 	@Test
-	public void loadSettings_should_keep_redirect_values() {
+	public void loadSettings_should_keep_existing_values() {
+		
 		// Given
-		BudgetLimit budgetLimit = new BudgetLimit();
-		budgetLimit.setBudgetLimit("400");
-
-		when(budgetLimitRepository.findAll(any(Sort.class))).thenReturn(new ArrayList<BudgetLimit>());
-
-		Model model = new ExtendedModelMap();
-		model.addAttribute("budget", budgetLimit);
+		when(model.containsAttribute("budget")).thenReturn(true);
 
 		// When
 		settingsController.loadSettings(model);
 
 		// Then
-		Assert.assertSame(budgetLimit, model.asMap().get("budget"));
+		verify(model, never()).addAttribute(eq("budget"), any());
 	}
-
 
 }
