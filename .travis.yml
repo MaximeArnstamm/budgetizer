@@ -1,0 +1,8 @@
+language: java
+
+script:
+	- mvn clean install
+	
+addons:
+	code_climate:
+		repo_tocken: 632b03587f282116bcee4f212828bc0edad219128fc26279b17f1fccd2c0f7ba
