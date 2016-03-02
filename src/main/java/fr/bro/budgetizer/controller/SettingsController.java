@@ -21,7 +21,10 @@ import fr.bro.budgetizer.service.SettingsService;
 @Controller
 @RequestMapping("/settings")
 public class SettingsController {
+
 	protected static final String MSG_ERROR_NON_UNIQUE_CATEGORY = "La catégorie existe déjà";
+
+	protected static final String BINDING_FIELD = "org.springframework.validation.BindingResult.";
 
 	@Autowired
 	protected SettingsService settingsService;
@@ -38,7 +41,8 @@ public class SettingsController {
 	}
 
 	@RequestMapping(value = "/budget/add", method = RequestMethod.POST)
-	public String saveSettings(@ModelAttribute("budget") @Valid BudgetLimit budgetLimit, Errors errors, RedirectAttributes redirectAttributes) {
+	public String saveSettings(@ModelAttribute("budget") @Valid BudgetLimit budgetLimit, Errors errors,
+			RedirectAttributes redirectAttributes) {
 		if (!errors.hasErrors()) {
 			try {
 				budgetLimitRepository.save(budgetLimit);
@@ -48,7 +52,7 @@ public class SettingsController {
 		}
 
 		redirectAttributes.addFlashAttribute("budget", budgetLimit);
-		redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.budget", errors);
+		redirectAttributes.addFlashAttribute(BINDING_FIELD+"budget", errors);
 		return "redirect:/settings";
 	}
 }
