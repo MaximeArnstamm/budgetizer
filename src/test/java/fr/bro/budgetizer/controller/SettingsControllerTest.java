@@ -32,13 +32,13 @@ public class SettingsControllerTest {
 	private SettingsController settingsController;
 
 	@Mock
-	RedirectAttributes redirectAttributes;
+	private RedirectAttributes redirectAttributes;
 
 	@Mock
-	Errors errors;
+	private Errors errors;
 
 	@Mock
-	Model model;
+	private Model model;
 
 	@Test
 	public void saveSettings_should_save() {
@@ -58,7 +58,6 @@ public class SettingsControllerTest {
 
 	@Test
 	public void saveSettings_should_redirect() {
-
 		// Given
 		BudgetLimit budgetLimit = new BudgetLimit();
 
@@ -90,7 +89,6 @@ public class SettingsControllerTest {
 		BudgetLimit budgetLimit = new BudgetLimit();
 
 		when(errors.hasErrors()).thenReturn(false);
-
 		when(budgetLimitRepository.save(budgetLimit)).thenThrow(new DataIntegrityViolationException(""));
 
 		// When
@@ -102,7 +100,6 @@ public class SettingsControllerTest {
 
 	@Test
 	public void loadSettings() {
-		
 		// Given
 		BudgetLimit budgetLimit1 = new BudgetLimit();
 		BudgetLimit budgetLimit2 = new BudgetLimit();
@@ -120,7 +117,6 @@ public class SettingsControllerTest {
 
 	@Test
 	public void loadSettings_should_keep_existing_values() {
-		
 		// Given
 		when(model.containsAttribute("budget")).thenReturn(true);
 
