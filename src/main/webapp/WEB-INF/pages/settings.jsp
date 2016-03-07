@@ -19,10 +19,10 @@
 <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 
 
-<link href="<c:url value="/resources/css/plugins/metisMenu/metisMenu.min.css"/>" rel="stylesheet">
-<link href="<c:url value="/resources/css/plugins/timeline.css"/>" rel="stylesheet">
-<link href="<c:url value="/resources/css/sb-admin-2.css"/>" rel="stylesheet">
-<link href="<c:url value="/resources/css/plugins/morris.css"/>" rel="stylesheet">
+<link href="<c:url value="/resources/vendor/css/plugins/metisMenu/metisMenu.min.css"/>" rel="stylesheet">
+<link href="<c:url value="/resources/vendor/css/plugins/timeline.css"/>" rel="stylesheet">
+<link href="<c:url value="/resources/vendor/css/sb-admin-2.css"/>" rel="stylesheet">
+<link href="<c:url value="/resources/vendor/css/plugins/morris.css"/>" rel="stylesheet">
 
 
 <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
